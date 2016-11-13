@@ -12,7 +12,10 @@
 *
 */
 
-#define highPin1 A0
+
+// Change these to match your configuration
+
+#define highPin1 A0 
 #define lowPin1  A11
 #define gatePin1 7
 
@@ -28,6 +31,16 @@
 #define lowPin4  A8
 #define gatePin4 2
  
+float shuntRes1 = 0.3;  // In Ohms - Shunt resistor value
+float shuntRes2 = 0.3;  // In Ohms - Shunt resistor value
+float shuntRes3 = 0.3;  // In Ohms - Shunt resistor value
+float shuntRes4 = 0.3;  // In Ohms - Shunt resistor value
+
+float voltRef = 5.00; // Reference voltage (probe your 5V pin) 
+int interval = 3000;  //Interval (ms) between measurements
+
+// END of config options
+
 boolean finished1 = false;
 boolean finished2 = false;
 boolean finished3 = false;
@@ -54,14 +67,11 @@ float shuntVolt2 = 0.0;
 float shuntVolt3 = 0.0;
 float shuntVolt4 = 0.0;
 
-float shuntRes = 0.46;  // In Ohms - Shunt resistor resistance
-float voltRef = 5.00; // Reference voltage (probe your 5V pin) 
 float current = 0.0;
 float battLow = 3.0;
  
 unsigned long previousMillis = 0;
 unsigned long millisPassed = 0;
-int interval = 1000;  //Interval (ms) between measurements
 
 unsigned long previousMs1 = 0;
 unsigned long previousMs2 = 0;
@@ -102,7 +112,7 @@ void loop() {
   {
       digitalWrite(gatePin1, HIGH);
       millisPassed = millis() - previousMs1;
-      current = (battVolt1 - shuntVolt1) / shuntRes;
+      current = (battVolt1 - shuntVolt1) / shuntRes1;
       mAh1 = mAh1 + (current * 1000.0) * (millisPassed / 3600000.0);
       previousMs1 = millis();
       wait1 = true;
@@ -136,7 +146,7 @@ void loop() {
   {
       digitalWrite(gatePin2, HIGH);
       millisPassed = millis() - previousMs2;
-      current = (battVolt2 - shuntVolt2) / shuntRes;
+      current = (battVolt2 - shuntVolt2) / shuntRes2;
       mAh2 = mAh2 + (current * 1000.0) * (millisPassed / 3600000.0);
       previousMs2 = millis();
       wait2 = true;
@@ -169,7 +179,7 @@ void loop() {
   {
       digitalWrite(gatePin3, HIGH);
       millisPassed = millis() - previousMs3;
-      current = (battVolt3 - shuntVolt3) / shuntRes;
+      current = (battVolt3 - shuntVolt3) / shuntRes3;
       mAh3 = mAh3 + (current * 1000.0) * (millisPassed / 3600000.0);
       previousMs3 = millis();
       wait3 = true;
@@ -202,7 +212,7 @@ void loop() {
   {
       digitalWrite(gatePin4, HIGH);
       millisPassed = millis() - previousMs4;
-      current = (battVolt4 - shuntVolt4) / shuntRes;
+      current = (battVolt4 - shuntVolt4) / shuntRes4;
       mAh4 = mAh4 + (current * 1000.0) * (millisPassed / 3600000.0);
       previousMs4 = millis();
       wait4 = true;
@@ -235,36 +245,16 @@ void loop() {
   if(finished1 == true && finished2 == true && finished3 == true && finished4 == true && waitAll == false)
   {
      Serial1.println("All batteries are discharged");
-     Serial1.println(battVolt1);
-     Serial1.println(battVolt2);
-     Serial1.println(battVolt3);
-     Serial1.println(battVolt4);
      Serial1.print("B1");
      Serial1.print("\t");
-     Serial1.print(battVolt1);
-     Serial1.print("\t");
-     Serial1.print(current);
-     Serial1.print("\t");
      Serial1.println(mAh1);
-     Serial1.print("B4");
-     Serial1.print("\t");
-     Serial1.print(battVolt2);
-     Serial1.print("\t");
-     Serial1.print(current);
+     Serial1.print("B2");
      Serial1.print("\t");
      Serial1.println(mAh2);
-     Serial1.print("B4");
-     Serial1.print("\t");
-     Serial1.print(battVolt3);
-     Serial1.print("\t");
-     Serial1.print(current);
+     Serial1.print("B3");
      Serial1.print("\t");
      Serial1.println(mAh3);
      Serial1.print("B4");
-     Serial1.print("\t");
-     Serial1.print(battVolt4);
-     Serial1.print("\t");
-     Serial1.print(current);
      Serial1.print("\t");
      Serial1.println(mAh4);
      waitAll = true;
