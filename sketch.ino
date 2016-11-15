@@ -135,7 +135,6 @@ void loop() {
   {
       digitalWrite(gatePin1, LOW);
       finished1 = true;
-      wait1 = true;
   }
 
   if(finished1 == true && wait1 == false)
@@ -175,7 +174,6 @@ void loop() {
   {
       digitalWrite(gatePin2, LOW);
       finished2 = true;
-      wait2 = true;
   }
 
   if(finished2 == true && wait2 == false)
@@ -214,7 +212,6 @@ void loop() {
   {
       digitalWrite(gatePin3, LOW);
       finished3 = true;
-      wait3 = true;
   }
 
   if(finished3 == true && wait3 == false)
@@ -254,9 +251,6 @@ void loop() {
   {
       digitalWrite(gatePin4, LOW);
       finished4 = true;
-      wait4 = true;
-
-      Serial1.println("Battery 4 complete");
   }
 
   if(finished4 == true && wait4 == false)
