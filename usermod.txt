@@ -1,0 +1,2 @@
+# Add user pi to the dialout group in order to access the serial port
+sudo usermod -a -G dialout pi
