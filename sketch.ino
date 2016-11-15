@@ -15,9 +15,9 @@
 
 // Change these to match your configuration
 
-#define highPin1 A0 
-#define lowPin1  A11
-#define gatePin1 7
+#define highPin1 A0    // High side of the shunt resitor
+#define lowPin1  A11   // Low side of the shunt resistor
+#define gatePin1 7     // Signal to the gate pin of the MOSFET
 
 #define highPin2 A1
 #define lowPin2  A10
@@ -31,13 +31,13 @@
 #define lowPin4  A8
 #define gatePin4 2
  
-float shuntRes1 = 0.3;  // In Ohms - Shunt resistor value
-float shuntRes2 = 0.3;  // In Ohms - Shunt resistor value
-float shuntRes3 = 0.3;  // In Ohms - Shunt resistor value
-float shuntRes4 = 0.3;  // In Ohms - Shunt resistor value
+float shuntRes1 = 0.3; // In Ohms - Shunt resistor value
+float shuntRes2 = 0.3;
+float shuntRes3 = 0.3;
+float shuntRes4 = 0.3;
 
-float voltRef = 5.00; // Reference voltage (probe your 5V pin) 
-int interval = 3000;  //Interval (ms) between measurements
+float voltRef = 5.00;  // Reference voltage (probe your 5V pin) 
+int interval = 3000;   //Interval (ms) between measurements
 
 // END of config options
 
@@ -87,6 +87,10 @@ void setup() {
   Serial1.begin(115200);
   Serial1.println("Booting up...");
  
+  pinMode(gatePin1, OUTPUT);
+  pinMode(gatePin2, OUTPUT);
+  pinMode(gatePin3, OUTPUT);
+  pinMode(gatePin4, OUTPUT);
   digitalWrite(gatePin1, LOW);
   digitalWrite(gatePin2, LOW);
   digitalWrite(gatePin3, LOW);
@@ -126,13 +130,20 @@ void loop() {
       Serial1.println(mAh1);
        
   }
+
   if(battVolt1 < battLow && wait1 == false)
   {
       digitalWrite(gatePin1, LOW);
       finished1 = true;
       wait1 = true;
+  }
 
-      Serial1.println("Battery 1 complete");
+  if(finished1 == true && wait1 == false)
+  {
+      Serial1.print("B1*");
+      Serial1.print("\t");
+      Serial1.println(mAh1);
+      wait1 = true;
   }
 
   if((wait1 == true) && (currentMillis - previousMillis1 >= interval))
@@ -159,13 +170,20 @@ void loop() {
       Serial1.print("\t");
       Serial1.println(mAh2);
   }
+
   if(battVolt2 < battLow && wait2 == false)
   {
       digitalWrite(gatePin2, LOW);
       finished2 = true;
       wait2 = true;
+  }
 
-      Serial1.println("Battery 2 complete");
+  if(finished2 == true && wait2 == false)
+  {
+      Serial1.print("B2*");
+      Serial1.print("\t");
+      Serial1.println(mAh2);
+      wait2 = true;
   }
 
   if((wait2 == true) && (currentMillis - previousMillis2 >= interval))
@@ -197,8 +215,14 @@ void loop() {
       digitalWrite(gatePin3, LOW);
       finished3 = true;
       wait3 = true;
+  }
 
-      Serial1.println("Battery 3 complete");
+  if(finished3 == true && wait3 == false)
+  {
+      Serial1.print("B3*");
+      Serial1.print("\t");
+      Serial1.println(mAh3);
+      wait3 = true;
   }
 
   if((wait3 == true) && (currentMillis - previousMillis3 >= interval))
@@ -225,6 +249,7 @@ void loop() {
       Serial1.print("\t");
       Serial1.println(mAh4);
   }
+
   if(battVolt4 < battLow && wait4 == false)
   {
       digitalWrite(gatePin4, LOW);
@@ -232,6 +257,14 @@ void loop() {
       wait4 = true;
 
       Serial1.println("Battery 4 complete");
+  }
+
+  if(finished4 == true && wait4 == false)
+  {
+      Serial1.print("B4*");
+      Serial1.print("\t");
+      Serial1.println(mAh4);
+      wait4 = true;
   }
 
   if((wait4 == true) && (currentMillis - previousMillis4 >= interval))
