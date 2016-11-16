@@ -51,6 +51,7 @@ boolean wait2 = false;
 boolean wait3 = false;
 boolean wait4 = false;
 boolean waitAll = false;
+boolean finishedAll = false;
 
 float mAh1 = 0.0;
 float mAh2 = 0.0;
@@ -137,7 +138,7 @@ void loop() {
 		finished1 = true;
 	}
 
-	if(finished1 == true && wait1 == false)
+	if(finished1 == true && finishedAll == false && wait1 == false)
 	{
 		Serial1.print("B1*");
 		Serial1.print("\t");
@@ -176,7 +177,7 @@ void loop() {
 		finished2 = true;
 	}
 
-	if(finished2 == true && wait2 == false)
+	if(finished2 == true && finishedAll == false && wait2 == false)
 	{
 		Serial1.print("B2*");
 		Serial1.print("\t");
@@ -214,7 +215,7 @@ void loop() {
 		finished3 = true;
 	}
 
-	if(finished3 == true && wait3 == false)
+	if(finished3 == true && finishedAll == false && wait3 == false)
 	{
 		Serial1.print("B3*");
 		Serial1.print("\t");
@@ -253,7 +254,7 @@ void loop() {
 		finished4 = true;
 	}
 
-	if(finished4 == true && wait4 == false)
+	if(finished4 == true && finishedAll == false && wait4 == false)
 	{
 		Serial1.print("B4*");
 		Serial1.print("\t");
@@ -285,6 +286,7 @@ void loop() {
 		Serial1.print("\t");
 		Serial1.println(mAh4);
 		waitAll = true;
+		finishedAll = true;
 	}
 	if((waitAll == true) && (currentMillis - previousMillisAll >= interval))
 	{
