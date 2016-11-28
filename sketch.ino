@@ -1,9 +1,8 @@
 /*
 
    Based on adamwelch.co.uk/2016/01/lithium-ion-18650-battery-capacity-checker/
-   
-*/
 
+*/
 
 // Change these to match your configuration
 
@@ -72,6 +71,7 @@ void setup() {
   digitalWrite(gatePin2, LOW);
   digitalWrite(gatePin3, LOW);
   digitalWrite(gatePin4, LOW);
+  delay(2000);
 }
 
 void loop() {
@@ -88,8 +88,8 @@ void loop() {
 
   unsigned long currentMillis = millis();
 
-// Main cell checking and reporting routine
-// 
+  // Main cell checking and reporting routine
+
   if (currentMillis - previousMillis >= interval)
   {
     previousMillis = currentMillis;
@@ -109,7 +109,6 @@ void loop() {
       Serial1.print(current);
       Serial1.print("\t");
       Serial1.println(mAh1);
-
     }
 
     if (cellVolt1 < cellLow)
@@ -122,7 +121,7 @@ void loop() {
     {
       Serial1.print("C1*");
       Serial1.print("\t");
-      Serial1.println(mAh1);
+      Serial1.println(mAh1, 0);
     }
 
     // Cell 2
@@ -152,7 +151,7 @@ void loop() {
     {
       Serial1.print("C2*");
       Serial1.print("\t");
-      Serial1.println(mAh2);
+      Serial1.println(mAh2, 0);
     }
 
     // Cell 3
@@ -182,7 +181,7 @@ void loop() {
     {
       Serial1.print("C3*");
       Serial1.print("\t");
-      Serial1.println(mAh3);
+      Serial1.println(mAh3, 0);
     }
 
     // Cell 4
@@ -212,7 +211,13 @@ void loop() {
     {
       Serial1.print("C4*");
       Serial1.print("\t");
-      Serial1.println(mAh4);
+      Serial1.println(mAh4, 0);
+    }
+
+    // Add a blank line
+    if (finishedAll == false)
+    {
+      Serial1.println();
     }
 
     // All cells have finished discharging.
@@ -222,16 +227,17 @@ void loop() {
       Serial1.println("All cells are discharged");
       Serial1.print("C1");
       Serial1.print("\t");
-      Serial1.println(mAh1);
+      Serial1.println(mAh1, 0);
       Serial1.print("C2");
       Serial1.print("\t");
-      Serial1.println(mAh2);
+      Serial1.println(mAh2, 0);
       Serial1.print("C3");
       Serial1.print("\t");
-      Serial1.println(mAh3);
+      Serial1.println(mAh3, 0);
       Serial1.print("C4");
       Serial1.print("\t");
-      Serial1.println(mAh4);
+      Serial1.println(mAh4, 0);
+      Serial1.println();
       finishedAll = true;
     }
     previousMs = millis();
