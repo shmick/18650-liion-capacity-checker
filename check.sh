@@ -3,7 +3,7 @@
 COMPLETE=$HOME/complete.txt
 
 logcheck() {
-done=$(tail -120 $HOME/serial.log | grep -v ^$ | /bin/grep -A4 "All cells are discharged" | head -5 | tr "\t" " ")
+done=$(tail -120 $HOME/serial.log | grep -v ^$ | /bin/grep -a -A4 "All cells are discharged" | head -5 | tr "\t" " ")
 }
 
 logcheck
